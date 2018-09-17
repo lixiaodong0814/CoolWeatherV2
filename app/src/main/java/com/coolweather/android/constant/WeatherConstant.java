@@ -23,12 +23,12 @@ public class WeatherConstant {
     /**
      * 必应每日一图url
      */
-    public static final String WC_BING_URL = "";
+    public static final String WC_BING_URL = "http://guolin.tech/api/bing_pic";
 
     /**
      * 和风天气key
      */
-    public static final String WC_USER_KEY = "";
+    public static final String WC_USER_KEY = "bc0418b57b2d4918819d3974ac1285d9";
 
     /**
      * 返回结果状态
