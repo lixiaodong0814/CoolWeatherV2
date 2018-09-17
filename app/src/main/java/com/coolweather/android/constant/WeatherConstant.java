@@ -6,9 +6,34 @@ package com.coolweather.android.constant;
 public class WeatherConstant {
 
     /**
-     * 天气接口地址前缀
+     * 获取区域接口url前缀
      */
     public static final String WC_BASE_URL = "http://guolin.tech/api/china/";
+
+    /**
+     * 请求天气情况url前缀
+     */
+    public static final String WC_WEATHER_URL = "http://guolin.tech/api/weather";
+
+    /**
+     * 和风天气用户id
+     */
+    public static final String WC_USER_ID = "";
+
+    /**
+     * 必应每日一图url
+     */
+    public static final String WC_BING_URL = "";
+
+    /**
+     * 和风天气key
+     */
+    public static final String WC_USER_KEY = "";
+
+    /**
+     * 返回结果状态
+     */
+    public static final String WC_OK = "ok";
 
     /**
      * 请求服务器数据类型-省
