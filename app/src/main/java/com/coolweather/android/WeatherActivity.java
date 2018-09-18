@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -41,6 +42,8 @@ import okhttp3.Callback;
 import okhttp3.Response;
 
 public class WeatherActivity extends AppCompatActivity {
+
+    public static final String TAG = "WeatherActivity";
 
     @BindView(R.id.weather_layout)
     ScrollView weatherLayout;
@@ -165,6 +168,7 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        Log.i(TAG, "=========================weather info: " + responseText);
                         Toast.makeText(WeatherActivity.this, responseText, Toast.LENGTH_LONG).show();
                         if (weather != null && WeatherConstant.WC_OK.equals(weather.status)) {
                             SharedPreferences.Editor editor = PreferenceManager
