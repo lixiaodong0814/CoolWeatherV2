@@ -12,12 +12,18 @@ public class Forecast {
     @SerializedName("cond")
     public More more;
 
+    /**
+     * 温度
+     */
     public class Temperature {
         public String max;
 
         public String min;
     }
 
+    /**
+     * 天气描述
+     */
     public class More {
         @SerializedName("txt_d")
         public String info;

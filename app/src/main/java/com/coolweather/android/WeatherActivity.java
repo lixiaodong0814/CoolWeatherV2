@@ -30,6 +30,7 @@ import com.coolweather.android.gson.Weather;
 import com.coolweather.android.service.AutoUpdateService;
 import com.coolweather.android.util.HttpUtil;
 import com.coolweather.android.util.Utility;
+import com.google.gson.Gson;
 
 import org.w3c.dom.Text;
 
@@ -68,6 +69,9 @@ public class WeatherActivity extends AppCompatActivity {
 
     @BindView(R.id.pm25_text)
     TextView pm25Text;
+
+    @BindView(R.id.qlty_text)
+    TextView qltyText;
 
     @BindView(R.id.comfort_text)
     TextView comfortText;
@@ -111,15 +115,18 @@ public class WeatherActivity extends AppCompatActivity {
         } else {
             loadBingPic();
         }
+
         String weatherStr = prefs.getString("weather", null);
         final String weatherId;
         // 有缓存的时候直接解析天气数据
         if (weatherStr != null) {
+            Log.i(TAG, "onCreate: weatherStr != null,直接解析天气数据");
             Weather weather = Utility.handleWeatherResponse(weatherStr);
             weatherId = weather.basic.weatherId;
             showWeatherInfo(weather);
         } else {
             // 无缓存时去服务器查询天气
+            Log.i(TAG, "onCreate: weatherStr == null,从服务器查询天气数据");
             weatherId = getIntent().getStringExtra("weather_id");
             weatherLayout.setVisibility(View.INVISIBLE);
             requestWeather(weatherId);
@@ -154,7 +161,7 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(WeatherActivity.this, "获取天气信息失败00", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(WeatherActivity.this, "获取天气信息失败", Toast.LENGTH_SHORT).show();
                         swipeRefreshLayout.setRefreshing(false);
                     }
                 });
@@ -168,8 +175,9 @@ public class WeatherActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Log.i(TAG, "=========================weather info: " + responseText);
-                        Toast.makeText(WeatherActivity.this, responseText, Toast.LENGTH_LONG).show();
+                        Log.i(TAG, "=========================weather responseText: " + responseText);
+                        Log.i(TAG, "=========================weather info: " + new Gson().toJson(weather));
+//                        Toast.makeText(WeatherActivity.this, responseText, Toast.LENGTH_LONG).show();
                         if (weather != null && WeatherConstant.WC_OK.equals(weather.status)) {
                             SharedPreferences.Editor editor = PreferenceManager
                                     .getDefaultSharedPreferences(WeatherActivity.this)
@@ -178,7 +186,7 @@ public class WeatherActivity extends AppCompatActivity {
                             editor.apply();
                             showWeatherInfo(weather);
                         } else {
-                            Toast.makeText(WeatherActivity.this, "获取天气信息失败0", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(WeatherActivity.this, "解析天气信息失败", Toast.LENGTH_SHORT).show();
                         }
                         swipeRefreshLayout.setRefreshing(false);
                     }
@@ -247,6 +255,7 @@ public class WeatherActivity extends AppCompatActivity {
         if (weather.aqi != null) {
             aqiText.setText(weather.aqi.city.aqi);
             pm25Text.setText(weather.aqi.city.pm25);
+            qltyText.setText(weather.aqi.city.qlty);
         }
         String comfort = "舒适度：" + weather.suggestion.comfort.info;
         String carWash = "洗车指数：" + weather.suggestion.carWash.info;

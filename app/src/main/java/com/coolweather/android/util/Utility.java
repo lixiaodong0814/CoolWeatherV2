@@ -1,22 +1,30 @@
 package com.coolweather.android.util;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.coolweather.android.db.City;
 import com.coolweather.android.db.Country;
 import com.coolweather.android.db.Province;
 import com.coolweather.android.gson.Weather;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 
 /**
  * 解析处理JSON数据
  */
 public class Utility {
+
+    public static final String TAG = "Utility";
 
     /**
      * 解析和处理返回的省级数据
@@ -108,11 +116,13 @@ public class Utility {
     public static Weather handleWeatherResponse(String response) {
         try {
             JSONObject jsonObject = new JSONObject(response);
-            JSONArray jsonArray = jsonObject.getJSONArray("Heweather");
+            JSONArray jsonArray = jsonObject.getJSONArray("HeWeather");
             String weatherContent = jsonArray.getJSONObject(0).toString();
+            Log.i(TAG, "======================================handleWeatherResponse: " + weatherContent);
 
-            return new Gson().fromJson(weatherContent, Weather.class);
+            return new Gson().fromJson(weatherContent,  new TypeToken<Weather>(){}.getType());
         } catch (Exception e) {
+            Log.e(TAG, "handleWeatherResponse error: " + e.getLocalizedMessage());
             e.printStackTrace();
         }
 
